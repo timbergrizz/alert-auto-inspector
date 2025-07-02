@@ -6,20 +6,20 @@ from .base import BaseNotificationAdapter
 class SlackAdapter(BaseNotificationAdapter):
     def send(self, alert: CanonicalAlert, explanation: str):
         slack_message = {
-            "text": "🚨 New Alert: {alert.title}",
+            "text": f"🚨 New Alert: {alert.title}",
             "blocks": [
                 {
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "🚨 {alert.title}"
+                        "text": f"🚨 {alert.title}"
                     }
                 },
                 {
                     "type": "section",
                     "fields": [
-                        {"type": "mrkdwn", "text": "*Service:*\n`{alert.service_name}`"},
-                        {"type": "mrkdwn", "text": "*Severity:*\n`{alert.severity.upper()}`"},
+                        {"type": "mrkdwn", "text": f"*Service:*\n`{alert.service_name}`"},
+                        {"type": "mrkdwn", "text": f"*Severity:*\n`{alert.severity.upper()}`"},
                     ]
                 },
                 {
@@ -29,7 +29,7 @@ class SlackAdapter(BaseNotificationAdapter):
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": "*What's Happening (Explained by AI):*\n{explanation}"
+                        "text": f"*What's Happening (Explained by AI):*\n{explanation}"
                     }
                 },
                 {
@@ -37,7 +37,7 @@ class SlackAdapter(BaseNotificationAdapter):
                     "elements": [
                         {
                             "type": "mrkdwn",
-                            "text": "Source: {alert.source_system}"
+                            "text": f"Source: {alert.source_system}"
                         }
                     ]
                 }
