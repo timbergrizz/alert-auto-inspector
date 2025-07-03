@@ -2,15 +2,19 @@ from fastapi import APIRouter, Request, HTTPException
 from services.alert_service import AlertService
 from adapters.ingestion.unified import UnifiedWebhookAdapter
 from adapters.notification.slack import SlackAdapter
+from services.vector_db_service import VectorDBService
 
 router = APIRouter()
+
+vector_db_service = VectorDBService()
 
 alert_service = AlertService(
     ingestion_adapter=UnifiedWebhookAdapter(),
     notification_adapter=SlackAdapter(),
+    vector_db_service=vector_db_service,
 )
 
-@router.post("/webhook/unified")
+@router.post("/webhook")
 async def receive_unified_webhook(request: Request):
     try:
         raw_alert = await request.json()

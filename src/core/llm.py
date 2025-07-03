@@ -4,20 +4,20 @@ from models.canonical import CanonicalAlert
 
 client = openai.OpenAI(api_key=LLM_API_KEY, base_url=LLM_BASE_URL)
 
-def get_explanation(alert: CanonicalAlert) -> str:
+def get_explanation(alert: CanonicalAlert, context_documents: list = None) -> str:
     prompt = f"""
     You are an on-call engineering assistant with senior experience. Your job is to explain a technical monitoring alert for a notification channel.
     give a detailed report of the alert as possible by given data for user to understand as fast as possible. inspect and investigate the circumstances with given tools.
     You MUST given what you have investigated and what you have found.
 
     Here is the alert data in a structured format:
-    - Service: {alert.service_name}
+    - Service: {alert.service}
     - Severity: {alert.severity}
     - Title: {alert.title}
-    - Description: {alert.description}
-    - Affected Entity: {alert.entity}
 
     Based on this information, provide a structured report of what is happening.
+
+    {f"\nHere is some additional context that might be relevant:\n{context_documents}" if context_documents else ""}
     """
 
     response = client.chat.completions.create(
