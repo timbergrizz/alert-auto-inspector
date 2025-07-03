@@ -18,7 +18,7 @@ class SlackAdapter(BaseNotificationAdapter):
                 {
                     "type": "section",
                     "fields": [
-                        {"type": "mrkdwn", "text": f"*Service:*\n`{alert.service_name}`"},
+                        {"type": "mrkdwn", "text": f"*Service:*\n`{alert.service}`"},
                         {"type": "mrkdwn", "text": f"*Severity:*\n`{alert.severity.upper()}`"},
                     ]
                 },

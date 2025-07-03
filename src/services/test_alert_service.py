@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, patch
-from models.canonical import CanonicalAlert
+
+from pydantic.networks import HttpUrl
+from models.canonical import AlertDetails, CanonicalAlert
 from services.alert_service import AlertService
 
 
@@ -11,12 +13,14 @@ def test_process_alert(mock_get_explanation):
 
     raw_alert = {"title": "Test Alert"}
     canonical_alert = CanonicalAlert(
-        service_name="test-service",
-        severity="critical",
         title="Test Alert",
-        description="This is a test alert.",
-        entity="test-entity",
-        source_system="test-system",
+        environment="test",
+        service="test-service",
+        severity="critical",
+        status="firing",
+        timestamp="2025-07-03T12:00:00Z",
+        details=AlertDetails(metric="test"),
+        link_to_source=HttpUrl("http://example.com/source"),
         raw_payload=raw_alert
     )
     explanation = "This is a test explanation."

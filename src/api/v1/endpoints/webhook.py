@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Request, HTTPException
 from services.alert_service import AlertService
-from adapters.ingestion.datadog import DatadogAdapter
+from adapters.ingestion.unified import UnifiedWebhookAdapter
 from adapters.notification.slack import SlackAdapter
 
 router = APIRouter()
 
 alert_service = AlertService(
-    ingestion_adapter=DatadogAdapter(),
+    ingestion_adapter=UnifiedWebhookAdapter(),
     notification_adapter=SlackAdapter(),
 )
 
-@router.post("/explain/datadog")
-async def handle_datadog_webhook(request: Request):
+@router.post("/webhook/unified")
+async def receive_unified_webhook(request: Request):
     try:
         raw_alert = await request.json()
         alert_service.process_alert(raw_alert)

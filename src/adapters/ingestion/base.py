@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from models.canonical import CanonicalAlert
+from models.canonical import CanonicalAlert, AlertDetails
 
 class BaseIngestionAdapter(ABC):
     @abstractmethod
