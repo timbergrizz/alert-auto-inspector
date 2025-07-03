@@ -1,0 +1,31 @@
+{
+  "title": "High CPU utilization detected on server 'web-01'",
+  "environment": "production",
+  "service": "web-01",
+  "severity": "Critical",
+  "status": "firing",
+  "timestamp": "2025-07-03T10:30:00Z",
+  "details": {
+    "metric": "cpu_utilization",
+    "current_value": "95%",
+    "threshold": "90%"
+  },
+  "link_to_source": "http://example.com/monitoring/web-01",
+  "runbook_url": null,
+  "owner_team": null,
+  "source_system": "monitoring-system",
+  "tags": {},
+  "image_url": null,
+  "raw_payload": {
+    "timestamp": "2025-07-03T10:30:00Z",
+    "level": "CRITICAL",
+    "message": "High CPU utilization detected on server 'web-01'. Current usage: 95%",
+    "source": "monitoring-system",
+    "details": {
+      "server_id": "web-01",
+      "metric": "cpu_utilization",
+      "threshold": "90%",
+      "current_value": "95%"
+    }
+  }
+}

@@ -10,6 +10,12 @@
 ### High Importance
 - **Research and Select Vector Database:** Evaluate and choose a suitable vector database technology (e.g., Pinecone, Weaviate, FAISS, ChromaDB) based on project requirements and existing infrastructure.
 - **Integrate Vector Database:** Implement the necessary client code and configuration to connect to and interact with the selected vector database. (Likely in `src/services/` or a new `src/database/` module).
+  - **Setup ChromaDB for Vector Storage:** Add `chromadb` and `sentence-transformers` to the project dependencies in `pyproject.toml`.
+  -> done
+  - **Create `VectorDBService`:** Implement a service in `src/services/vector_db_service.py` to encapsulate all interactions with ChromaDB. It should handle client initialization, collection creation, document addition, and querying.
+  - **Update `AlertService`:** Modify `src/services/alert_service.py` to use the `VectorDBService` to search for relevant context based on the incoming alert's content.
+  - **Update `get_explanation` in `llm.py`:** Enhance the prompt in `src/core/llm.py` by injecting the context retrieved from the vector database, providing the LLM with the necessary information to generate a more insightful explanation.
+
 - **Implement RAG (Retrieval-Augmented Generation) Logic:** Develop the core logic to perform semantic searches in the vector database based on alert details and integrate the retrieved context into the LLM's prompt. (Likely in `src/core/llm.py` and `src/services/`).
 
 ### Medium Importance
