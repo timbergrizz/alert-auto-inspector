@@ -5,11 +5,11 @@ from models.canonical import AlertDetails, CanonicalAlert
 from services.alert_service import AlertService
 
 
-@patch('services.alert_service.get_explanation')
-def test_process_alert(mock_get_explanation):
+def test_process_alert():
     # Arrange
     mock_ingestion_adapter = MagicMock()
     mock_notification_adapter = MagicMock()
+    mock_graph_service = MagicMock()
 
     raw_alert = {"title": "Test Alert"}
     canonical_alert = CanonicalAlert(
@@ -26,11 +26,12 @@ def test_process_alert(mock_get_explanation):
     explanation = "This is a test explanation."
 
     mock_ingestion_adapter.normalize.return_value = canonical_alert
-    mock_get_explanation.return_value = explanation
+    mock_graph_service.run.return_value = explanation
 
     alert_service = AlertService(
         ingestion_adapter=mock_ingestion_adapter,
         notification_adapter=mock_notification_adapter,
+        graph_service=mock_graph_service,
     )
 
     # Act
@@ -38,5 +39,5 @@ def test_process_alert(mock_get_explanation):
 
     # Assert
     mock_ingestion_adapter.normalize.assert_called_once_with(raw_alert)
-    mock_get_explanation.assert_called_once_with(canonical_alert)
+    mock_graph_service.run.assert_called_once_with(canonical_alert)
     mock_notification_adapter.send.assert_called_once_with(canonical_alert, explanation)
