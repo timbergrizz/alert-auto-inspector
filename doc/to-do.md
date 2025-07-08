@@ -3,20 +3,23 @@
 ## Pre-Milestone 2: Testing Infrastructure
 
 ### High Importance
-- **Develop Comprehensive Test Suite:** Create unit and integration tests for existing Milestone 1 components (webhook endpoint, adapters, LLM integration, notification) to ensure stability and provide a safety net for future development.
+- [x] **Develop Comprehensive Test Suite:** Create unit and integration tests for existing Milestone 1 components (webhook endpoint, adapters, LLM integration, notification) to ensure stability and provide a safety net for future development.
 
 ## Milestone 2: Contextualizer
 
 ### High Importance
-- **Research and Select Vector Database:** Evaluate and choose a suitable vector database technology (e.g., Pinecone, Weaviate, FAISS, ChromaDB) based on project requirements and existing infrastructure.
-- **Integrate Vector Database:** Implement the necessary client code and configuration to connect to and interact with the selected vector database. (Likely in `src/services/` or a new `src/database/` module).
-  - **Setup ChromaDB for Vector Storage:** Add `chromadb` and `sentence-transformers` to the project dependencies in `pyproject.toml`.
-  -> done
-  - **Create `VectorDBService`:** Implement a service in `src/services/vector_db_service.py` to encapsulate all interactions with ChromaDB. It should handle client initialization, collection creation, document addition, and querying.
-  - **Update `AlertService`:** Modify `src/services/alert_service.py` to use the `VectorDBService` to search for relevant context based on the incoming alert's content.
-  - **Update `get_explanation` in `llm.py`:** Enhance the prompt in `src/core/llm.py` by injecting the context retrieved from the vector database, providing the LLM with the necessary information to generate a more insightful explanation.
+- [x] **Research and Select Vector Database:** Evaluate and choose a suitable vector database technology (e.g., Pinecone, Weaviate, FAISS, ChromaDB) based on project requirements and existing infrastructure.
+  - ChromaDB will be used for initial development.
+  - Additional VectorDB is considered for future.
+- [x] **Integrate Vector Database:** Implement the necessary client code and configuration to connect to and interact with the selected vector database. (Likely in `src/services/` or a new `src/database/` module).
+  - [x] **Setup ChromaDB for Vector Storage:** Add `chromadb` and `sentence-transformers` to the project dependencies in `pyproject.toml`.
+  - [x] **Create `VectorDBService`:** Implement a service in `src/services/vector_db_service.py` to encapsulate all interactions with ChromaDB. It should handle client initialization, collection creation, document addition, and querying.
+    - Implemented on `src/services/vector_db_service.py`
+  - [x] **Update `AlertService`:** Modify `src/services/alert_service.py` to use the `VectorDBService` to search for relevant context based on the incoming alert's content. -> done
+  - [x] **Update `get_explanation` in `llm.py`:** Enhance the prompt in `src/core/llm.py` by injecting the context retrieved from the vector database, providing the LLM with the necessary information to generate a more insightful explanation. -> done
 
-- **Implement RAG (Retrieval-Augmented Generation) Logic:** Develop the core logic to perform semantic searches in the vector database based on alert details and integrate the retrieved context into the LLM's prompt. (Likely in `src/core/llm.py` and `src/services/`).
+- [x] **Implement RAG (Retrieval-Augmented Generation) Logic:** Develop the core logic to perform semantic searches in the vector database based on alert details and integrate the retrieved context into the LLM's prompt. (Likely in `src/core/llm.py` and `src/services/`).
+  - Implemented with LangGraph
 
 ### Medium Importance
 - **Develop Knowledge Base Connectors:** Create modules to ingest various types of knowledge (Runbooks, Playbooks, Post-mortems, Incident Reports, Service Catalogs, Metadata, Resolved Tickets) into the vector database. (Likely in `src/adapters/ingestion/` or a new `src/ingestion/` directory).
