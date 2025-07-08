@@ -33,7 +33,7 @@ def test_initialization(mock_chromadb_client, mock_embedding_function):
     mock_client, mock_collection = mock_chromadb_client
     db_path = "./test_db"
     collection_name = "test_collection"
-    
+
     service = VectorDBService(db_path=db_path, collection_name=collection_name)
 
     # Verify that the client was initialized with the correct path
@@ -103,6 +103,6 @@ def test_query_documents(vector_db_service):
 @pytest.mark.parametrize("db_path, collection_name", [("", None), (None, "")])
 def test_initialization_failure(db_path, collection_name):
     """Tests that initialization raises an exception if dependencies fail."""
-    with patch('chromadb.PersistentClient', side_effect=Exception("Connection failed")),
-         pytest.raises(Exception, match="Connection failed"):
+    with patch('chromadb.PersistentClient', side_effect=Exception("Connection failed")):
+        pytest.raises(Exception, match="Connection failed")
         VectorDBService(db_path=db_path, collection_name=collection_name)
