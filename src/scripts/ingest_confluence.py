@@ -5,10 +5,10 @@ from typing import List, Protocol
 
 from dotenv import load_dotenv
 
-from src.adapters.knowledge_base.base import BaseKnowledgeBaseConnector
-from src.adapters.knowledge_base.confluence import ConfluenceConnector
-from src.models.knowledge_base import KnowledgeBaseArticle
-from src.services.vector_db_service import VectorDBService
+from adapters.knowledge_base.base import BaseKnowledgeBaseConnector
+from adapters.knowledge_base.confluence import ConfluenceConnector
+from models.knowledge_base import KnowledgeBaseArticle
+from services.vector_db_service import VectorDBService
 
 # Configure logging
 logging.basicConfig(
@@ -86,10 +86,10 @@ def main():
     # --- Configuration ---
     # It's recommended to use environment variables for configuration
     # to keep the script flexible and secure.
-    confluence_url = os.getenv("CONFLUENCE_URL")
-    confluence_api_key = os.getenv("CONFLUENCE_API_KEY")
-    confluence_space_key = os.getenv("CONFLUENCE_SPACE_KEY")
-    confluence_username = os.getenv("CONFLUENCE_USERNAME")
+    confluence_url = os.getenv("CONFLUENCE_URL", "")
+    confluence_api_key = os.getenv("CONFLUENCE_API_KEY", "")
+    confluence_space_key = os.getenv("CONFLUENCE_SPACE_KEY", "")
+    confluence_username = os.getenv("CONFLUENCE_USERNAME", "")
     chroma_db_path = os.getenv("CHROMA_DB_PATH", "./src/chroma_db")
     collection_name = os.getenv("CHROMA_COLLECTION_NAME", "knowledge_base")
 

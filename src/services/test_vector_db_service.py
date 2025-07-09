@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch
 from src.services.vector_db_service import VectorDBService
 from src.models.knowledge_base import KnowledgeBaseArticle
 
-# Mock the chromadb library
 @pytest.fixture
 def mock_chromadb_client():
     """Mocks the chromadb.PersistentClient and its methods."""
@@ -12,7 +11,7 @@ def mock_chromadb_client():
         mock_collection = MagicMock()
         mock_client_instance.get_or_create_collection.return_value = mock_collection
         mock_client_constructor.return_value = mock_client_instance
-        yield mock_client_instance, mock_collection
+        yield mock_client_constructor, mock_client_instance, mock_collection
 
 @pytest.fixture
 def mock_embedding_function():
@@ -25,23 +24,25 @@ def vector_db_service(mock_chromadb_client, mock_embedding_function):
     """Provides a VectorDBService instance with mocked dependencies."""
     db_path = "./test_db"
     collection_name = "test_collection"
+    # We don't need the constructor or collection here, just the service instance
+    _, _, _ = mock_chromadb_client
     service = VectorDBService(db_path=db_path, collection_name=collection_name)
     return service
 
 def test_initialization(mock_chromadb_client, mock_embedding_function):
     """Tests if the service initializes the client and collection correctly."""
-    mock_client, mock_collection = mock_chromadb_client
+    mock_client_constructor, mock_client_instance, mock_collection = mock_chromadb_client
     db_path = "./test_db"
     collection_name = "test_collection"
 
     service = VectorDBService(db_path=db_path, collection_name=collection_name)
 
     # Verify that the client was initialized with the correct path
-    patch('chromadb.PersistentClient').assert_called_once_with(path=db_path)
+    mock_client_constructor.assert_called_once_with(path=db_path)
 
     # Verify that the collection was retrieved with the correct name and embedding function
-    mock_client.get_or_create_collection.assert_called_once()
-    assert mock_client.get_or_create_collection.call_args[1]['name'] == collection_name
+    mock_client_instance.get_or_create_collection.assert_called_once()
+    assert mock_client_instance.get_or_create_collection.call_args[1]['name'] == collection_name
     assert service.collection == mock_collection
 
 
@@ -104,5 +105,5 @@ def test_query_documents(vector_db_service):
 def test_initialization_failure(db_path, collection_name):
     """Tests that initialization raises an exception if dependencies fail."""
     with patch('chromadb.PersistentClient', side_effect=Exception("Connection failed")):
-        pytest.raises(Exception, match="Connection failed")
-        VectorDBService(db_path=db_path, collection_name=collection_name)
+        with pytest.raises(Exception, match="Connection failed"):
+            VectorDBService(db_path=db_path, collection_name=collection_name)
