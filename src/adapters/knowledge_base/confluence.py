@@ -6,8 +6,8 @@ from atlassian import Confluence
 from atlassian.errors import ApiError
 from pydantic import HttpUrl
 
-from src.adapters.knowledge_base.base import BaseKnowledgeBaseConnector
-from src.models.knowledge_base import KnowledgeBaseArticle
+from adapters.knowledge_base.base import BaseKnowledgeBaseConnector
+from models.knowledge_base import KnowledgeBaseArticle
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

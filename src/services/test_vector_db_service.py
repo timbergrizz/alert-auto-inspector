@@ -22,27 +22,24 @@ def mock_embedding_function():
 @pytest.fixture
 def vector_db_service(mock_chromadb_client, mock_embedding_function):
     """Provides a VectorDBService instance with mocked dependencies."""
-    db_path = "./test_db"
-    collection_name = "test_collection"
     # We don't need the constructor or collection here, just the service instance
     _, _, _ = mock_chromadb_client
-    service = VectorDBService(db_path=db_path, collection_name=collection_name)
+    service = VectorDBService()
     return service
 
 def test_initialization(mock_chromadb_client, mock_embedding_function):
     """Tests if the service initializes the client and collection correctly."""
+    from src.core.config import DB_PATH, DB_COLLECTION_NAME
     mock_client_constructor, mock_client_instance, mock_collection = mock_chromadb_client
-    db_path = "./test_db"
-    collection_name = "test_collection"
 
-    service = VectorDBService(db_path=db_path, collection_name=collection_name)
+    service = VectorDBService()
 
     # Verify that the client was initialized with the correct path
-    mock_client_constructor.assert_called_once_with(path=db_path)
+    mock_client_constructor.assert_called_once_with(path=DB_PATH)
 
     # Verify that the collection was retrieved with the correct name and embedding function
     mock_client_instance.get_or_create_collection.assert_called_once()
-    assert mock_client_instance.get_or_create_collection.call_args[1]['name'] == collection_name
+    assert mock_client_instance.get_or_create_collection.call_args[1]['name'] == DB_COLLECTION_NAME
     assert service.collection == mock_collection
 
 
@@ -106,4 +103,4 @@ def test_initialization_failure(db_path, collection_name):
     """Tests that initialization raises an exception if dependencies fail."""
     with patch('chromadb.PersistentClient', side_effect=Exception("Connection failed")):
         with pytest.raises(Exception, match="Connection failed"):
-            VectorDBService(db_path=db_path, collection_name=collection_name)
+            VectorDBService()

@@ -4,11 +4,11 @@ from adapters.ingestion.unified import UnifiedWebhookAdapter
 from adapters.notification.slack import SlackAdapter
 from services.graph_service import GraphService
 from services.vector_db_service import VectorDBService
+from core.config import DB_PATH, DB_COLLECTION_NAME
 
 router = APIRouter()
 
-vector_db_service = VectorDBService()
-vector_db_service.get_or_create_collection("knowledge_base")
+vector_db_service = VectorDBService(db_path=DB_PATH, collection_name=DB_COLLECTION_NAME)
 graph_service = GraphService(vector_db_service=vector_db_service)
 
 alert_service = AlertService(

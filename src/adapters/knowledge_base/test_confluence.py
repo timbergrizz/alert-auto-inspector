@@ -48,11 +48,14 @@ def test_convert_to_article():
         last_updated=datetime.datetime(2025, 7, 8, 10, 0, 0, tzinfo=datetime.timezone.utc),
     )
 
+    print(expected_article)
+
     # Act
     article = connector._convert_to_article(mock_page_content)
+    print(article)
 
     # Assert
-    assert article == expected_article
+    assert article.model_dump() == expected_article.model_dump()
 
 def test_fetch_articles_success():
     """

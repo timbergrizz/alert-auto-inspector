@@ -4,7 +4,8 @@ from typing import List
 import chromadb
 from chromadb.utils import embedding_functions
 
-from src.models.knowledge_base import KnowledgeBaseArticle
+from core.config import DB_PATH, DB_COLLECTION_NAME
+from models.knowledge_base import KnowledgeBaseArticle
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ class VectorDBService:
     adding, upserting, and querying.
     """
 
-    def __init__(self, db_path: str, collection_name: str):
+    def __init__(self, db_path: str = DB_PATH, collection_name: str = DB_COLLECTION_NAME):
         """
         Initializes the VectorDBService.
 
